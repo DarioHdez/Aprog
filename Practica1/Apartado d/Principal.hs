@@ -1,6 +1,5 @@
 module Principal where
   import Quick
-  import Data.List
   import GHC.List
 
   -- Ejercicio d
@@ -18,10 +17,7 @@ module Principal where
           | otherwise      = filter pred xs
 
   main :: IO()
-  main = do print (quicksort [3,1,5,9,2,6])
-            print (quicksort [1,3,2])
-            print (sort [5,2,9,8,1])
-            print (miReplicate 3 "Wololo")
+  main = do print (miReplicate 3 "Wololo")
             print (miReplicate 3 True)
             print (miReplicate 3 5)
             print (miFilter (>5) [5,6,7,8])
