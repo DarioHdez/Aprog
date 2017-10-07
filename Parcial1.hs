@@ -18,3 +18,9 @@ module Parcial1 where
       | otherwise = f x (calcular' f e xs)
       where x = head l
             xs = tail l
+
+  (|>) :: [a] -> (a -> a) -> [a]
+  m |> g = map g m
+
+  (<**>) :: [a] -> [(a -> a)] -> [a]
+  xs <**> fs = [f x | x<-xs, f<-fs]
