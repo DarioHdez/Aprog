@@ -45,4 +45,4 @@ module Complejos where
                 else False
 
  idListaNegativo :: [(Double,Double)] -> [(Double,Double)]
- idListaNegativo (x:xs) = [x | ] 
+ idListaNegativo xs = [x | x <- xs, (fst x) < 0, (snd x) < 0]
