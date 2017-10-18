@@ -46,3 +46,6 @@ module Complejos where
 
  idListaNegativo :: [(Double,Double)] -> [(Double,Double)]
  idListaNegativo xs = [x | x <- xs, (fst x) < 0, (snd x) < 0]
+
+ quitarCero :: [(Double,Double)] -> [(Double,Double)]
+ quitarCero xs = [x | x <- xs, (fst x) /= 0, (snd x) /= 0] 
