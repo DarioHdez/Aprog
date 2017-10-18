@@ -48,4 +48,10 @@ module Complejos where
  idListaNegativo xs = [x | x <- xs, (fst x) < 0, (snd x) < 0]
 
  quitarCero :: [(Double,Double)] -> [(Double,Double)]
- quitarCero xs = [x | x <- xs, (fst x) /= 0, (snd x) /= 0] 
+ quitarCero xs = [x | x <- xs, (fst x) /= 0, (snd x) /= 0]
+
+ sortByAscendantModule :: [(Double,Double)] -> [(Double,Double)]
+ sortByAscendantModule [] = []
+ sortByAscendantModule (x:xs) = menores ++ [x] ++ mayores
+                                where menores = sortByAscendantModule [ y | y <- xs, (moduloComplejos y) <= (moduloComplejos x)]
+                                      mayores = sortByAscendantModule [ z | z <- xs, (moduloComplejos z)  > (moduloComplejos x)]
