@@ -1,6 +1,8 @@
+{-# LANGUAGE GADTs #-}
 module Ej3 where
 
-data Complejo = Comp a (b) | x ::: b
+
+data Complejo = Comp Double Double | Double ::: Double deriving Show
 
 -- CÓDIGO
 

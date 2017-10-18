@@ -45,15 +45,31 @@ module Complejos where
                 else False
 
  idListaNegativo :: [(Double,Double)] -> [(Double,Double)]
- idListaNegativo xs = [x | x <- xs, (fst x) < 0, (snd x) < 0]
+ idListaNegativo [] = []
+ idListaNegativo (x:xs) | (idNegativo x == True) = [x] ++ idListaNegativo xs
+                        | otherwise = idListaNegativo xs
 
  quitarCero :: [(Double,Double)] -> [(Double,Double)]
- quitarCero xs = [x | x <- xs, (fst x) /= 0, (snd x) /= 0]
+ quitarCero [] = []
+ quitarCero (x:xs) | (fst x) == 0 && (snd x) == 0 = quitarCero xs
+                   | otherwise = [x] ++ quitarCero xs
 
  sortByAscendantModule :: [(Double,Double)] -> [(Double,Double)]
- sortByAscendantModule [] = []
- sortByAscendantModule (x:xs) = menores ++ [x] ++ mayores
-                                where menores = sortByAscendantModule [ y | y <- xs, (moduloComplejos y) <= (moduloComplejos x)]
-                                      mayores = sortByAscendantModule [ z | z <- xs, (moduloComplejos z)  > (moduloComplejos x)]
+ sortByAscendantModule [x] = [x]
+ sortByAscendantModule (x:xs) = bubble x (sortByAscendantModule xs)
 
- multiplicarListasComplejos :: [(Double,Double)] -> [(Double,Double)] -> [(Double,Double)] -> [(Double,Double)]
+ bubble :: (Double,Double) -> [(Double,Double)] -> [(Double,Double)]
+ bubble y [] = [y]
+ bubble y (x:xs) | moduloComplejos y > moduloComplejos x = [x] ++ bubble y xs
+                 | otherwise = [y] ++ [x] ++ xs
+
+ complexDistributed :: [(Double,Double)] -> [(Double,Double)] -> [(Double,Double)]
+ complexDistributed [] [] = []
+ complexDistributed xs [] = []
+ complexDistributed [] ys = []
+ complexDistributed [x] ys = runYs x ys
+ complexDistributed (x:xs) ys = (complexDistributed xs ys) ++ (runYs x ys)
+
+ runYs :: (Double,Double) -> [(Double,Double)] -> [(Double,Double)]
+ runYs x [] = []
+ runYs x ys = [(multiplicarComplejos x (head ys))] ++ (runYs x (tail ys))
