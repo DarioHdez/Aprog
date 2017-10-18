@@ -55,3 +55,5 @@ module Complejos where
  sortByAscendantModule (x:xs) = menores ++ [x] ++ mayores
                                 where menores = sortByAscendantModule [ y | y <- xs, (moduloComplejos y) <= (moduloComplejos x)]
                                       mayores = sortByAscendantModule [ z | z <- xs, (moduloComplejos z)  > (moduloComplejos x)]
+
+ multiplicarListasComplejos :: [(Double,Double)] -> [(Double,Double)] -> [(Double,Double)] -> [(Double,Double)]
