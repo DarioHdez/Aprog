@@ -25,7 +25,7 @@ module Complejos where
  moduloComplejos x = sqrt y where y = (fst x)^^2+(snd x)^^2
 
  convertirACadena :: Complejo -> String
- convertirACadena x = " (" ++ show (fst x) ++ "," ++ show (snd x) ++ ") "
+ convertirACadena x =  show (fst x) ++ " + " ++ show (snd x) ++ "i "
 
  convertirListaACadena :: [Complejo] -> String
  convertirListaACadena [] = " "

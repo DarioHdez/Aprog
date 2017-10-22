@@ -18,9 +18,62 @@ module Complejos where
 
   sumaComplejos :: [Complejo] -> Complejo
   sumaComplejos [] = (Car 0 0)
-  sumaComplejos (x:xs) =  (conversion x) +++ (sumaComplejos xs)
+  sumaComplejos (x:xs) =  x +++ (sumaComplejos xs)
 
-  (+++) :: Complejo -> Complejo -> Complejo
-  (+++) x y = (Car n m)
-                      where n = (+) (real x) (real y)
-                            m = (+) (imaginaria x) (imaginaria y)
+  (|+) :: Complejo -> Complejo -> Complejo
+  (|+) x y = (Car n m)
+                      where n = (+) (real o) (real p)
+                            m = (+) (imaginaria o) (imaginaria p)
+                            o = conversion x
+                            p = conversion y
+
+  (|*) :: Complejo -> Complejo -> Complejo
+  (|*) x y = (Car n m)
+                  where n = (*) (real o) (real p)
+                        m = (*) (imaginaria o) (imaginaria p)
+                        o = conversion x
+                        p = conversion y
+
+  (|-) :: Complejo -> Complejo -> Complejo
+  (|-) x y = (Car n m)
+                  where n = (-) (real o) (real p)
+                        m = (-) (imaginaria o) (imaginaria p)
+                        o = conversion x
+                        p = conversion y
+
+  moduloComplejos :: Complejo -> Double
+  moduloComplejos x = sqrt y
+                            where y = (real z)^^2+(imaginaria z)^^2
+                                  z = conversion x
+
+  convertirACadena :: Complejo -> String
+  convertirACadena x = show (real y) ++ " + " ++ show (imagianria y) ++ "i "
+                       where y = conversion x
+
+  convertirListaACadena :: [Complejo] -> String
+  convertirListaACadena [] = " "
+  convertirListaACadena (x:xs) = convertirACadena x ++ ","++ convertirListaACadena xs
+
+  idNegativo :: Complejo -> Bool
+  idNegativo x = if (real y) < 0 && (imaginaria y) < 0 then True else False
+                 where y = conversion x
+
+  idListaNegativo :: [Complejo] -> [Complejo]
+  idListaNegativo [] = []
+  idListaNegativo (x:xs) | (idNegativo x == True) = [x] ++ idListaNegativo xs
+                         | otherwise = idListaNegativo xs
+
+  quitarCero :: [Complejo] -> [Complejo]
+  quitarCero [] = []
+  quitarCero (x:xs) | (real y) == 0 && (imaginaria y) == 0 = quitarCero xs
+                    | otherwise = [x] ++ quitarCero xs
+                      where y = conversion x
+
+  sortByAscendantModule :: [Complejo] -> [Complejo]
+  sortByAscendantModule [x] = [x]
+  sortByAscendantModule (x:xs) = bubble x (sortByAscendantModule xs)
+
+  bubble :: Complejo -> [Complejo] -> [Complejo]
+  bubble y [] = [y]
+  bubble y (x:xs) | moduloComplejos y > moduloComplejos x = [x] ++ bubble y xs
+                  | otherwise = [y] ++ [x] ++ xs
