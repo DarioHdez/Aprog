@@ -1,11 +1,11 @@
 module Complejos where
 
-  data Complejo = Cero | Uno | I | Car Double Double | Pol Double Double deriving Show
+  data Complejo a = Cero | Uno | I | Car a a | Pol a a deriving Show
 
-  real :: Complejo -> Double
+  real :: Complejo -> a
   real (Car x y) = x
 
-  imaginaria :: Complejo -> Double
+  imaginaria :: Complejo -> a
   imaginaria (Car x y) = y
 
   conversion :: Complejo -> Complejo
