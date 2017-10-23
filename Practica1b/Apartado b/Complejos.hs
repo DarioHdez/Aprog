@@ -18,7 +18,7 @@ module Complejos where
 
   sumaComplejos :: [Complejo] -> Complejo
   sumaComplejos [] = (Car 0 0)
-  sumaComplejos (x:xs) =  x +++ (sumaComplejos xs)
+  sumaComplejos (x:xs) =  x |+ (sumaComplejos xs)
 
   (|+) :: Complejo -> Complejo -> Complejo
   (|+) x y = (Car n m)
@@ -47,7 +47,7 @@ module Complejos where
                                   z = conversion x
 
   convertirACadena :: Complejo -> String
-  convertirACadena x = show (real y) ++ " + " ++ show (imagianria y) ++ "i "
+  convertirACadena x = show (real y) ++ " + " ++ show (imaginaria y) ++ "i "
                        where y = conversion x
 
   convertirListaACadena :: [Complejo] -> String
@@ -77,3 +77,14 @@ module Complejos where
   bubble y [] = [y]
   bubble y (x:xs) | moduloComplejos y > moduloComplejos x = [x] ++ bubble y xs
                   | otherwise = [y] ++ [x] ++ xs
+
+  complexDistributed :: [Complejo] -> [Complejo] -> [Complejo]
+  complexDistributed [] [] = []
+  complexDistributed xs [] = []
+  complexDistributed [] ys = []
+  complexDistributed [x] ys = runYs x ys
+  complexDistributed (x:xs) ys = (complexDistributed xs ys) ++ (runYs x ys)
+
+  runYs :: Complejo -> [Complejo] -> [Complejo]
+  runYs x [] = []
+  runYs x ys = [(x |* (head ys))] ++ (runYs x (tail ys))
