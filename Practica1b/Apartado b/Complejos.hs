@@ -51,7 +51,7 @@ module Complejos where
                       where n = (+) (real o) (real p)
                             m = (+) (imaginaria o) (imaginaria p)
                             o = conversion x
-                            p = conversion
+                            p = conversion y
 
   -- Funcion que multiplica 2 complejos.
   -- Recibe 2 numeros complejos y devuelve uno cuyo valor es la multiplicacion.
