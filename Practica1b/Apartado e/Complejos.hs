@@ -33,48 +33,11 @@ module Complejos where
   conversion (Pol x y) = (Car a b) where a = (*) x (cos y)
                                          b = (*) x (sin y)
 
-  sumaComplejos :: (Floating a) => [Complejo a] -> Complejo a
-  sumaComplejos [] = (Car 0 0)
-  sumaComplejos (x:xs) =  x |+ (sumaComplejos xs)
-
-  (|+) :: (Floating a) => Complejo a -> Complejo a -> Complejo a
-  (|+) x y = (Car n m)
-                      where n = (+) (real o) (real p)
-                            m = (+) (imaginaria o) (imaginaria p)
-                            o = conversion x
-                            p = conversion y
-
-  (|*) :: (Floating a) => Complejo a -> Complejo a -> Complejo a
-  (|*) x y = (Car n m)
-                  where n = (*) (real o) (real p)
-                        m = (*) (imaginaria o) (imaginaria p)
-                        o = conversion x
-                        p = conversion y
-
-  (|-) :: (Floating a) => Complejo a -> Complejo a -> Complejo a
-  (|-) x y = (Car n m)
-                  where n = (-) (real o) (real p)
-                        m = (-) (imaginaria o) (imaginaria p)
-                        o = conversion x
-                        p = conversion y
-
   moduloComplejos :: (Floating a) => Complejo a -> a
   moduloComplejos x = sqrt y
                             where y = (real z)^^2+(imaginaria z)^^2
                                   z = conversion x
-
-  idNegativo :: (Floating a, Ord a) => Complejo a -> Bool
-  idNegativo x = if (real y) < 0 && (imaginaria y) < 0 then True else False
-                    where y = conversion x
-
-  idListaNegativo :: (Floating a, Ord a) => [Complejo a] -> [Complejo a]
-  idListaNegativo xs = [x | x <- xs , idNegativo x == True]
-
-  quitarCero :: (Floating a, Ord a) => [Complejo a] -> [Complejo a]
-  quitarCero xs = [x | x <- xs, (real (conversion x) /= 0 || imaginaria (conversion x) /= 0)]
-
-  {--
-
+{--
   Hemos quitado Pasar a cadena
   --}
   sortByAscendantModule :: (Floating a, Ord a) => [Complejo a] -> [Complejo a]
@@ -82,6 +45,3 @@ module Complejos where
   sortByAscendantModule (x:xs) = (sortByAscendantModule [ y | y <- xs, moduloComplejos y <= moduloComplejos x ])
                                  ++ [x] ++
                                  (sortByAscendantModule [ z | z <- xs, moduloComplejos z  > moduloComplejos x ])
-
-  complexDistributed :: (Floating a) => [Complejo a] -> [Complejo a] -> [Complejo a]
-  complexDistributed xs ys = [x |* y | x <- xs, y <- ys]
