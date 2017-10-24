@@ -57,12 +57,24 @@ module Complejos where
                      | signum n == (-1) = "(" ++ show n ++ ")"
                      | otherwise = show n
 
-  instance (Floating a, Show a, Eq a) => Eq (Complejo a) where
+  instance (Floating a, Eq a) => Eq (Complejo a) where
        c1 == c2 = (real (conversion c1) == real (conversion c2)) && (imaginaria (conversion c2) == imaginaria (conversion c1))
+       --(Car x y) == (Car w z) = x == w && y == z
 
-  instance (Floating a, Show a, Eq a) => Ord (Complejo a) where
-         compare c1 c2 = moduloComplejos c1 == moduloComplejos c2
-       {--
+  instance (Floating a, Eq a, Ord a) => Ord (Complejo a) where
+         compare c1 c2 = compare (moduloComplejos c1) (moduloComplejos c2)
+
+  idNegativo :: (Floating a) => Complejo a  -> Bool
+  idNegativo x = if (real y) < 0 && (imaginaria y) < 0 then True else False
+                    where y = conversion x
+
+  -- idListaNegativo :: (Floating a) => [Complejo a] -> [Complejo a]
+  -- idListaNegativo xs = [x | x <- xs , idNegativo x == False]
+  --
+--  quitarCero :: (Floating a) => [Complejo a] -> [Complejo a]
+--  quitarCero xs = [x | x <- xs, (real (conversion x) /= 0 || imaginaria (conversion x) /= 0)]
+
+  {--
 
    convertirACadena :: (Floating a) => Complejo a -> String
    convertirACadena x = show (real y) ++ " + " ++ show (imaginaria y) ++ "i "
@@ -72,15 +84,6 @@ module Complejos where
   convertirListaACadena [] = " "
   convertirListaACadena (x:xs) = convertirACadena x ++ ","++ convertirListaACadena xs
 
-  idNegativo :: (Floating a) => Complejo a  -> Bool
-  idNegativo x = if (real y) < 0 && (imaginaria y) < 0 then True else False
-                 where y = conversion x
-
-  idListaNegativo :: (Floating a) => [Complejo a] -> [Complejo a]
-  idListaNegativo xs = [x | x <- xs , idNegativo x == False]
-
-  quitarCero :: (Floating a) => [Complejo a] -> [Complejo a]
-  quitarCero xs = [x | x <- xs, (real (conversion x) /= 0 || imaginaria (conversion x) /= 0)]
 
   sortByAscendantModule :: (Floating a) => [Complejo a] -> [Complejo a]
   sortByAscendantModule [] = []
