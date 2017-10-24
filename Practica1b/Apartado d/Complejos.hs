@@ -1,14 +1,19 @@
+{-# LANGUAGE GADTs, KindSignatures, RankNTypes, FlexibleContexts, FlexibleInstances #-}
+
 module Complejos where
 
-  data Complejo a = Cero | Uno | I | Car a a | Pol a a deriving Show
+  data Complejo a where
+    Car, Pol :: (Floating a) => a -> a -> Complejo a
+    Cero, Uno, I :: (Floating a) => Complejo a
 
-  real :: Complejo -> a
+
+  real :: (Floating a) => Complejo a -> a
   real (Car x y) = x
 
-  imaginaria :: Complejo -> a
+  imaginaria :: (Floating a) => Complejo a -> a
   imaginaria (Car x y) = y
 
-  conversion :: Complejo -> Complejo
+  conversion :: (Floating a) => Complejo a -> Complejo a
   conversion Cero = (Car 0 0)
   conversion Uno = (Car 1 0)
   conversion I = (Car 0 1)
@@ -16,57 +21,71 @@ module Complejos where
   conversion (Pol x y) = (Car a b) where a = (*) x (cos y)
                                          b = (*) x (sin y)
 
-  sumaComplejos :: [Complejo] -> Complejo
+  sumaComplejos :: (Floating a) => [Complejo a] -> Complejo a
   sumaComplejos [] = (Car 0 0)
   sumaComplejos (x:xs) =  x |+ (sumaComplejos xs)
 
-  (|+) :: Complejo -> Complejo -> Complejo
+  (|+) :: (Floating a) => Complejo a -> Complejo a -> Complejo a
   (|+) x y = (Car n m)
                       where n = (+) (real o) (real p)
                             m = (+) (imaginaria o) (imaginaria p)
                             o = conversion x
                             p = conversion y
 
-  (|*) :: Complejo -> Complejo -> Complejo
+  (|*) :: (Floating a) => Complejo a -> Complejo a -> Complejo a
   (|*) x y = (Car n m)
                   where n = (*) (real o) (real p)
                         m = (*) (imaginaria o) (imaginaria p)
                         o = conversion x
                         p = conversion y
 
-  (|-) :: Complejo -> Complejo -> Complejo
+  (|-) :: (Floating a) => Complejo a -> Complejo a -> Complejo a
   (|-) x y = (Car n m)
                   where n = (-) (real o) (real p)
                         m = (-) (imaginaria o) (imaginaria p)
                         o = conversion x
                         p = conversion y
 
-  moduloComplejos :: Complejo -> Double
+  moduloComplejos :: (Floating a) => Complejo a -> a
   moduloComplejos x = sqrt y
                             where y = (real z)^^2+(imaginaria z)^^2
                                   z = conversion x
 
-  convertirACadena :: Complejo -> String
-  convertirACadena x = show (real y) ++ " + " ++ show (imaginaria y) ++ "i "
-                       where y = conversion x
+  instance (Floating a, Show a, Eq a) => Show (Complejo a) where
+    show c = show' (real (conversion c)) ++ "+" ++ show' (imaginaria  (conversion c)) ++ "i"
+            where show' n
+                     | signum n == (-1) = "(" ++ show n ++ ")"
+                     | otherwise = show n
 
-  convertirListaACadena :: [Complejo] -> String
+  instance (Floating a, Show a, Eq a) => Eq (Complejo a) where
+       c1 == c2 = (real (conversion c1) == real (conversion c2)) && (imaginaria (conversion c2) == imaginaria (conversion c1))
+
+  instance (Floating a, Show a, Eq a) => Ord (Complejo a) where
+         compare c1 c2 = moduloComplejos c1 == moduloComplejos c2
+       {--
+
+   convertirACadena :: (Floating a) => Complejo a -> String
+   convertirACadena x = show (real y) ++ " + " ++ show (imaginaria y) ++ "i "
+                        where y = conversion x
+
+  convertirListaACadena :: (Floating a) => [Complejo a] -> String
   convertirListaACadena [] = " "
   convertirListaACadena (x:xs) = convertirACadena x ++ ","++ convertirListaACadena xs
 
-  idNegativo :: Complejo -> Bool
+  idNegativo :: (Floating a) => Complejo a  -> Bool
   idNegativo x = if (real y) < 0 && (imaginaria y) < 0 then True else False
                  where y = conversion x
 
-  idListaNegativo :: [Complejo] -> [Complejo]
-  idListaNegativo xs = [x | x <- xs, idNegativo x == False]
+  idListaNegativo :: (Floating a) => [Complejo a] -> [Complejo a]
+  idListaNegativo xs = [x | x <- xs , idNegativo x == False]
 
-  quitarCero :: [Complejo] -> [Complejo]
+  quitarCero :: (Floating a) => [Complejo a] -> [Complejo a]
   quitarCero xs = [x | x <- xs, (real (conversion x) /= 0 || imaginaria (conversion x) /= 0)]
 
-  sortByAscendantModule :: [Complejo] -> [Complejo]
+  sortByAscendantModule :: (Floating a) => [Complejo a] -> [Complejo a]
   sortByAscendantModule [] = []
   sortByAscendantModule (x:xs) = (sortByAscendantModule [ y | y <- xs, moduloComplejos y <= moduloComplejos x ]) ++ [x] ++ (sortByAscendantModule [ z | z <- xs, moduloComplejos z  > moduloComplejos x ])
+  --}
 
-  complexDistributed :: [Complejo] -> [Complejo] -> [Complejo]
+  complexDistributed :: (Floating a) => [Complejo a] -> [Complejo a] -> [Complejo a]
   complexDistributed xs ys = [x |* y | x <- xs, y <- ys]
