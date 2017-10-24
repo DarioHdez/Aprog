@@ -59,7 +59,7 @@ module Complejos where
                  where y = conversion x
 
   idListaNegativo :: [Complejo] -> [Complejo]
-  idListaNegativo xs = [x | x <- xs, idNegativo x == False]
+  idListaNegativo xs = [x | x <- xs, idNegativo x == True]
 
   quitarCero :: [Complejo] -> [Complejo]
   quitarCero xs = [x | x <- xs, (real (conversion x) /= 0 || imaginaria (conversion x) /= 0)]
