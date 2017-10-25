@@ -1,5 +1,4 @@
 module Principal where
-  import Quick
   import GHC.List
 
   -- Funcion recursiva que dado un entero n y un elemento x,

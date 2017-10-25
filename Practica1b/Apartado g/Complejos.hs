@@ -6,14 +6,14 @@ module Complejos where
   --  Pol para representacion en polares (modulo*fase)
   data Complejo = Cero | Uno | I | Car Double Double | Pol Double Double deriving Show
 
-  class (Num a) => Distributiva a where
-                                  DisCab [a] -> [a] -> [a]
-                                  complexDistributed xs ys = [x |* y | x <- xs, y <- ys]
+  -- class (Num a) => Distributiva a where
+  --                                 DisCab [a] -> [a] -> [a]
+  --                                 complexDistributed xs ys = [x |* y | x <- xs, y <- ys]
 
-  instance Distributiva Integer
-  instance Distributiva Double
-  instance Distributiva Complejo
-  instance Num Complejo where (operaciones del minimal)
+  -- instance Distributiva Integer
+  -- instance Distributiva Double
+  -- instance Distributiva Complejo
+  -- instance Num Complejo where (operaciones del minimal)
 
 
   -- Funcion que dado un complejo de tipo (Car x y) devuelve su parte real
