@@ -2,22 +2,39 @@
 
 module Complejos where
 
+  -- Definimos nuestro tipo Complejo a como un tipo de dato polimorfico para
+  --  operaciones validas de la clase Floating. Las representaciones siguen siendo
+  --  las mismas que en apartados anteriores, pero ahora necesitamos instanciar
+  --  Show, Eq y Ord en nuestra clase
   data Complejo a where
     Car, Pol :: (Floating a) => a -> a -> Complejo a
     Cero, Uno, I :: (Floating a) => Complejo a
 
+  -- Con esta instance implementamos la manera de mostrar numeros complejos por
+  --  pantalla, lo que nos ahorra la funcion convertirACadena y convertirListaACadena
   instance (Floating a, Show a, Eq a) => Show (Complejo a) where
     show c = show' (real (conversion c)) ++ "+" ++ show' (imaginaria  (conversion c)) ++ "i"
             where show' n
                      | signum n == (-1) = "(" ++ show n ++ ")"
                      | otherwise = show n
 
+  -- Con esta instance implementamos la manera de comparar complejos.
+  -- Dos numeros complejos son iguales cuando su parte real y su parte imaginaria
+  --  son iguales.
   instance (Floating a, Eq a) => Eq (Complejo a) where
        c1 == c2 = (real (conversion c1) == real (conversion c2)) && (imaginaria (conversion c2) == imaginaria (conversion c1))
-       --(Car x y) == (Car w z) = x == w && y == z
 
+  -- Con esta instancia implementamos la manera de ordenar complejos.
+  -- Para saber cuando un complejo es mayor o menor, comparamos su modulo.
   instance (Floating a, Eq a, Ord a) => Ord (Complejo a) where
          compare c1 c2 =  compare (moduloComplejos c1) (moduloComplejos c2)
+
+  {--
+    Todo el codigo correspondiente a las funciones de este apartado es igual
+    al implementado en apartados anteriores, por lo que por limpieza y simplicidad
+    los comentarios no se añadiran.  
+
+  --}
 
   real :: (Floating a) => Complejo a -> a
   real (Car x y) = x
@@ -73,10 +90,6 @@ module Complejos where
   quitarCero :: (Floating a, Ord a) => [Complejo a] -> [Complejo a]
   quitarCero xs = [x | x <- xs, (real (conversion x) /= 0 || imaginaria (conversion x) /= 0)]
 
-  {--
-
-  Hemos quitado Pasar a cadena
-  --}
   sortByAscendantModule :: (Floating a, Ord a) => [Complejo a] -> [Complejo a]
   sortByAscendantModule [] = []
   sortByAscendantModule (x:xs) = (sortByAscendantModule [ y | y <- xs, moduloComplejos y <= moduloComplejos x ])
