@@ -11,13 +11,12 @@ module Principal where
   -- replicate original:
   --  replicate n x = take n (repeat x)
 
-  -- El codigo de miFilter es igual al original del Prelude.
   miFilter :: (a -> Bool) -> [a] -> [a]
   miFilter _pred []    = []
   miFilter pred (x:xs)
           | pred x         = x : filter pred xs
           | otherwise      = filter pred xs
-          
+
   main :: IO()
   main = do print (miReplicate 3 "Wololo")
             print (miReplicate 3 True)
