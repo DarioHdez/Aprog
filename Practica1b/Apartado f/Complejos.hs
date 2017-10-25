@@ -1,9 +1,12 @@
 module Complejos where
+  -- Para instanciar Fractional necesitamos Num
   instance Num Complejo
+  -- Para instanciar Floating necesitamos Fractional
   instance Fractional Complejo
+  -- Instanciamos Floating y declaramos las variables y funciones que necesitamos
   instance Floating Complejo where
     pi = 3.1416
-    exp x = 2.71828**x
+    exp x = (2.71828**x) + 1
     sin x = ((exp x) - (exp (-x)))/2
 
   data Complejo = Cero | Uno | I | Car Double Double | Pol Double Double deriving Show

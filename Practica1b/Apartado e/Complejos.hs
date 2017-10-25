@@ -14,7 +14,6 @@ module Complejos where
 
   instance (Floating a, Eq a) => Eq (Complejo a) where
        c1 == c2 = (real (conversion c1) == real (conversion c2)) && (imaginaria (conversion c2) == imaginaria (conversion c1))
-       --(Car x y) == (Car w z) = x == w && y == z
 
   instance (Floating a, Eq a, Ord a) => Ord (Complejo a) where
          compare c1 c2 =  compare (moduloComplejos c1) (moduloComplejos c2)
@@ -37,9 +36,7 @@ module Complejos where
   moduloComplejos x = sqrt y
                             where y = (real z)^^2+(imaginaria z)^^2
                                   z = conversion x
-{--
-  Hemos quitado Pasar a cadena
-  --}
+
   sortByAscendantModule :: (Floating a, Ord a) => [Complejo a] -> [Complejo a]
   sortByAscendantModule [] = []
   sortByAscendantModule (x:xs) = (sortByAscendantModule [ y | y <- xs, moduloComplejos y <= moduloComplejos x ])
