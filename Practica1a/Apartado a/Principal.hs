@@ -3,14 +3,16 @@ module Principal where
   import Data.List
   import GHC.List
 
-  -- Ejercicio d
+  -- Funcion recursiva que dado un entero n y un elemento x,
+  --  repite en una lista n veces el elemento x.
   miReplicate :: Int -> a -> [a]
-  miReplicate 1 x = [x]
+  miReplicate 1 x = [x] -- Caso base
   miReplicate n x = [x] ++ miReplicate (n-1) x
 
   -- replicate original:
   --  replicate n x = take n (repeat x)
 
+  -- El codigo de miFilter es igual al original del Prelude.
   miFilter :: (a -> Bool) -> [a] -> [a]
   miFilter _pred []    = []
   miFilter pred (x:xs)
