@@ -81,3 +81,14 @@ module Tautologias where
 
  myPrint :: Prop -> IO()
  myPrint x = putStrLn $ toString x
+
+ -- Realización de una operación en NPI
+ polacaInversa :: String -> Maybe Prop
+ polacaInversa = head . foldl funcionPliegue [] . words
+                    where   funcionPliegue (x:y:ys) "¬" = (¬y):ys
+                            funcionPliegue (x:y:ys) "/\\" = (y /\ x):ys
+                            funcionPliegue (x:y:ys) "\\/" = (y \/ x):ys
+                            funcionPiegue  (x:y:ys) "-->" = (y --> x):ys
+                            funcionPligue  (x:y:ys) "<-->" = (y <--> x):ys
+                            funcionPliegue xs cadenaNumero = 
+                                read cadenaNumero : xs
