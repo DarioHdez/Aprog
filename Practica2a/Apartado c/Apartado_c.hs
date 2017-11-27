@@ -85,14 +85,14 @@ module Tautologias where
 
  -- Pasar de infijo a postfijo
  aPosfijo :: Prop -> String
- aPosfijo (Var x)   = [x] ++ " "
- aPosfijo (Not x) = aPosfijo x ++ "¬"
- aPosfijo (And x y) = aPosfijo x ++ aPosfijo y ++ "/\\"
- aPosfijo (Or x y)  = aPosfijo x ++ aPosfijo y ++ "\\/"
- aPosfijo (Imply x y) = aPosfijo x ++ aPosfijo y ++ "-->"
+ aPosfijo (Var x)      = [x] ++ " "
+ aPosfijo (Not x)      = aPosfijo x ++ "¬"
+ aPosfijo (And x y)    = aPosfijo x ++ aPosfijo y ++ "/\\"
+ aPosfijo (Or x y)     = aPosfijo x ++ aPosfijo y ++ "\\/"
+ aPosfijo (Imply x y)  = aPosfijo x ++ aPosfijo y ++ "-->"
  aPosfijo (DImply x y) = aPosfijo x ++ aPosfijo y ++ "<-->"
- aPosfijo (Const x) = booleano ++ " "
-                        where booleano = if x == True then "True" else "False"
+ aPosfijo (Const x)    = booleano ++ " "
+                          where booleano = if x == True then "True" else "False"
 
  infixToPosfix :: Prop -> IO()
  infixToPosfix x = putStrLn $ aPosfijo x
