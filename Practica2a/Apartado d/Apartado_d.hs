@@ -82,6 +82,10 @@ module Tautologias where
  myPrint :: Prop -> IO()
  myPrint x = putStrLn $ toString x
 
+ posfixToInfix :: String -> Maybe Prop
+ posfixToInfix s = if (length (vars (polacaInversa s)) /= checkPolaca s) then Nothing
+                    else Just (polacaInversa s)
+
  -- Realización de una operación en NPI
  polacaInversa :: String -> Prop
  polacaInversa = head . foldl funcionPliegue [] . words
@@ -91,6 +95,11 @@ module Tautologias where
                             funcionPliegue (x:y:ys) "-->"  = Imply y x:ys
                             funcionPliegue (x:y:ys) "<-->" = DImply y x:ys
                             funcionPliegue xs cadena     = Var (head cadena) : xs
+
+ checkPolaca :: String -> Int
+ checkPolaca s = length a where
+                    a = [l | l <- words s, l /= "¬", l/= "/\\", l /= "\\/", l /= "-->", l /= "<-->"]
+
 
  -- Pasar de infijo a postfijo
  aPosfijo :: Prop -> String

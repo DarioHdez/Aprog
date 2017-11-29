@@ -1,5 +1,5 @@
 module Tautologias where
-
+ --import Data.List.Split
 -- Tautology checker --
 -----------------
 
@@ -82,6 +82,11 @@ module Tautologias where
  myPrint :: Prop -> IO()
  myPrint x = putStrLn $ toString x
 
+ -- Si da nothing la cadena de entrada esta mal, en caso contrario da Just (Prop correcta)
+ posfixToInfix :: String -> Maybe Prop
+ posfixToInfix s = if (length (vars (polacaInversa s)) /= checkPolaca s) then Nothing
+                    else Just (polacaInversa s)
+
  -- Realización de una operación en NPI
  polacaInversa :: String -> Prop
  polacaInversa = head . foldl funcionPliegue [] . words
@@ -91,3 +96,7 @@ module Tautologias where
                             funcionPliegue (x:y:ys) "-->"  = Imply y x:ys
                             funcionPliegue (x:y:ys) "<-->" = DImply y x:ys
                             funcionPliegue xs cadena     = Var (head cadena) : xs
+
+ checkPolaca :: String -> Int
+ checkPolaca s = length a where
+                    a = [l | l <- words s, l /= "¬", l/= "/\\", l /= "\\/", l /= "-->", l /= "<-->"]
