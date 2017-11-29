@@ -108,10 +108,5 @@ module Tautologias where
 
 
  main :: IO()
- main = do bucle1
-           where
-              let cadena = []
-              bucle1 = putStrLn "Introduce un elemento de una cadena en posfijo"
-              elemento <- getLine
-              cadena ++ elemento
-           myPrint (polacaInversa cadena)
+ main = do  putStrLn "Introduce "
+            cadena <- getLine
