@@ -82,12 +82,15 @@ module Tautologias where
  myPrint :: Prop -> IO()
  myPrint x = putStrLn $ toString x
 
- -- Si da nothing la cadena de entrada esta mal, en caso contrario da Just (Prop correcta)
+ -- Funcion principal que pasa un string en notacion posfija a proposicion
+ -- Devuelve Nothing si la cadena de entrada esta mal, en caso contrario da Just (proposicion correcta)
  posfixToInfix :: String -> Maybe Prop
  posfixToInfix s = if (length (vars (polacaInversa s)) /= checkPolaca s) then Nothing
                     else Just (polacaInversa s)
 
- -- Realización de una operación en NPI
+
+ -- Funcion auxiliar que pasa un string en notacion posfija a una preposicion.
+ -- Va guardando en una lista las proposiciones, y se queda con la ultima que genera.
  polacaInversa :: String -> Prop
  polacaInversa = head . foldl funcionPliegue [] . words
                     where   funcionPliegue (y:ys) "¬"      = Not y:ys
@@ -97,6 +100,8 @@ module Tautologias where
                             funcionPliegue (x:y:ys) "<-->" = DImply y x:ys
                             funcionPliegue xs cadena     = Var (head cadena) : xs
 
+ -- Funcion auxiliar que calcula el numero de variables que tendrian que quedar en la proposicion final
+ -- Recibe la misma cadena que la funcion principal.
  checkPolaca :: String -> Int
  checkPolaca s = length a where
                     a = [l | l <- words s, l /= "¬", l/= "/\\", l /= "\\/", l /= "-->", l /= "<-->"]
