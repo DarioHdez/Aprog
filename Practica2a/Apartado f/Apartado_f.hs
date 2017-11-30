@@ -106,9 +106,10 @@ module Tautologias where
  infixToPosfix :: Prop -> IO()
  infixToPosfix x = putStrLn $ aPosfijo x
 
- boolToString :: Bool -> String
- boolToString True = "TRUE"
- boolToString False = "FALSE"
+ cadena :: String
+ cadena = []
+ morecadenas :: String
+ morecadenas = []
 
  introducirPosfijo :: String -> IO Bool
  introducirPosfijo cadena = do  putStrLn "Introduce una proposicion en posfijo"

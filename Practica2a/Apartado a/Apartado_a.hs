@@ -70,14 +70,17 @@ module Tautologias where
  isTaut :: Prop -> Bool
  isTaut p =  and [eval s p | s <- substs p]
 
+ -- Funcion auxiliar de myPrint, calcula de manera recursiva lo que tiene que
+ --  imprimir cada proposicion.
  toString :: Prop -> String
- toString (Const x) = show x
- toString (Var x) = [x]
+ toString (Const x) = show x -- Const solo puede ser true o false
+ toString (Var x) = [x] -- Dado que se va generando una lista, añadimos el char a una lista
  toString (Not x) =  "(¬" ++ toString x ++ ")"
  toString (And x y) =  "(" ++ toString x ++ "/\\" ++ toString y ++ ")"
  toString (Or x y) =  "(" ++ toString x ++ "\\/" ++ toString y ++ ")"
  toString (Imply x y) = "(" ++ toString x ++ "-->" ++ toString y ++ ")"
  toString (DImply x y) = "(" ++ toString x ++ "<-->" ++ toString y ++ ")"
 
+ -- Funcion principal que recibe una proposicion y la escribe por pantalla
  myPrint :: Prop -> IO()
  myPrint x = putStrLn $ toString x
