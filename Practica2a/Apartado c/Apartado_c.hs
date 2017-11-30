@@ -82,8 +82,14 @@ module Tautologias where
  myPrint :: Prop -> IO()
  myPrint x = putStrLn $ toString x
 
+ -- Funcion principal que recibe una proposicion y la imprime por pantalla en posfijo
+ infixToPosfix :: Prop -> IO()
+ infixToPosfix x = putStrLn $ aPosfijo x
 
- -- Pasar de infijo a postfijo
+ -- Funcion auxiliar que pasa una proposicion a string
+ -- Para cada proposicion calcula de manera recursiva la cadena final
+ -- Las variables booleanas imprimen su valor y las variables se introducen como
+ --  una cadena. 
  aPosfijo :: Prop -> String
  aPosfijo (Var x)      = [x] ++ " "
  aPosfijo (Not x)      = aPosfijo x ++ "¬"
@@ -93,6 +99,3 @@ module Tautologias where
  aPosfijo (DImply x y) = aPosfijo x ++ aPosfijo y ++ "<-->"
  aPosfijo (Const x)    = booleano ++ " "
                           where booleano = if x == True then "True" else "False"
-
- infixToPosfix :: Prop -> IO()
- infixToPosfix x = putStrLn $ aPosfijo x
